@@ -1,0 +1,58 @@
+[
+  {
+    "id": "M-SAF-001",
+    "nom": "Presse Hydraulique PH-400",
+    "zone": "Atelier Emboutissage",
+    "statut": "En fonctionnement",
+    "production": 420
+  },
+  {
+    "id": "M-SAF-002",
+    "nom": "Tour Numérique TN-20",
+    "zone": "Atelier Usinage",
+    "statut": "En fonctionnement",
+    "production": 315
+  },
+  {
+    "id": "M-SAF-003",
+    "nom": "Fraiseuse Universelle FU-12",
+    "zone": "Atelier Usinage",
+    "statut": "À l'arrêt",
+    "production": 140
+  },
+  {
+    "id": "M-SAF-004",
+    "nom": "Robot de Soudure SR-04",
+    "zone": "Atelier Assemblage",
+    "statut": "En panne",
+    "production": 65
+  },
+  {
+    "id": "M-SAF-005",
+    "nom": "Découpeuse Laser DL-150",
+    "zone": "Atelier Découpe",
+    "statut": "En fonctionnement",
+    "production": 580
+  },
+  {
+    "id": "M-SAF-006",
+    "nom": "Ligne d'Emballage LE-08",
+    "zone": "Atelier Conditionnement",
+    "statut": "En fonctionnement",
+    "production": 890
+  },
+  {
+    "id": "M-SAF-007",
+    "nom": "Broyeur Industriel BI-02",
+    "zone": "Atelier Préparation",
+    "statut": "À l'arrêt",
+    "production": 0
+  },
+  {
+    "id": "M-SAF-008",
+    "nom": "Four Thermique FT-60",
+    "zone": "Atelier Traitement",
+    "statut": "En panne",
+    "production": 110
+  }
+]
