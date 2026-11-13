@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MachinesContext } from './machinesContext';
+import { MachinesContext } from './MachinesContext';
 import { getNextMachineId } from '../utils/machineValidation';
 
 export function MachinesProvider({ children }) {
