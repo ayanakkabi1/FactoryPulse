@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import logoImg from '../../assets/Logo_wt_bg.png';
 import avatarImg from '../../assets/dashboard/avatar.png';
-import './Navbar.css';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -11,19 +10,19 @@ export default function Navbar() {
   const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <header className="navbar-header">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-brand" onClick={closeMenu}>
-          <img src={logoImg} alt="FactoryPulse" className="navbar-logo-img" />
-          <span className="navbar-brand-title">FACTORYPULSE</span>
+    <header className="bg-[#f8f4ef] px-10 pt-6 max-[900px]:px-4 max-[900px]:pt-3">
+      <div className="flex items-center justify-between rounded-[20px] bg-[#ddceb9] px-5 py-2 max-[900px]:px-3 max-[900px]:py-2">
+        <Link to="/" className="flex items-center gap-2 text-[#2d1d0c] no-underline" onClick={closeMenu}>
+          <img src={logoImg} alt="FactoryPulse" className="size-[34px] rounded-full object-cover" />
+          <span className="text-base font-semibold tracking-[-0.87px]">FACTORYPULSE</span>
         </Link>
 
-        <nav className="navbar-desktop-nav">
+        <nav className="flex gap-8 max-[900px]:hidden">
           <NavLink
             to="/"
             end
             className={({ isActive }) =>
-              `nav-link ${isActive ? 'nav-link-active' : ''}`
+              `text-[13px] font-light tracking-[-0.6px] text-[#2d1d0c] no-underline transition-opacity hover:opacity-70 ${isActive ? 'font-medium' : ''}`
             }
           >
             Dashboard
@@ -33,7 +32,7 @@ export default function Navbar() {
             to="/machines"
             end
             className={({ isActive }) =>
-              `nav-link ${isActive ? 'nav-link-active' : ''}`
+              `text-[13px] font-light tracking-[-0.6px] text-[#2d1d0c] no-underline transition-opacity hover:opacity-70 ${isActive ? 'font-medium' : ''}`
             }
           >
             Parc Machines
@@ -42,7 +41,7 @@ export default function Navbar() {
           <NavLink
             to="/kanban"
             className={({ isActive }) =>
-              `nav-link ${isActive ? 'nav-link-active' : ''}`
+              `text-[13px] font-light tracking-[-0.6px] text-[#2d1d0c] no-underline transition-opacity hover:opacity-70 ${isActive ? 'font-medium' : ''}`
             }
           >
             Kanban
@@ -51,15 +50,15 @@ export default function Navbar() {
           <NavLink
             to="/machines/new"
             className={({ isActive }) =>
-              `nav-link ${isActive ? 'nav-link-active' : ''}`
+              `text-[13px] font-light tracking-[-0.6px] text-[#2d1d0c] no-underline transition-opacity hover:opacity-70 ${isActive ? 'font-medium' : ''}`
             }
           >
             Nouvelle machine
           </NavLink>
         </nav>
 
-        <div className="navbar-right">
-          <button type="button" className="navbar-search-btn" aria-label="Search">
+        <div className="flex items-center gap-3 max-[900px]:hidden">
+          <button type="button" className="flex size-[34px] cursor-pointer items-center justify-center rounded-full border-0 bg-[#6e473b] text-white" aria-label="Search">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" strokeWidth="2.5"
                  strokeLinecap="round" strokeLinejoin="round">
@@ -67,18 +66,18 @@ export default function Navbar() {
               <line x1="16.5" y1="16.5" x2="21" y2="21" />
             </svg>
           </button>
-          <div className="navbar-user">
-            <img src={avatarImg} alt="User avatar" className="navbar-user-avatar" />
-            <div className="navbar-user-info">
-              <span className="navbar-user-hello">Hello!</span>
-              <span className="navbar-user-name">Aya</span>
+          <div className="flex items-center gap-2">
+            <img src={avatarImg} alt="User avatar" className="size-[34px] rounded-full object-cover" />
+            <div className="flex flex-col leading-[1.3]">
+              <span className="text-[13px] font-light text-[#6e473b]">Hello!</span>
+              <span className="text-[13px] font-medium text-[#2d1d0c]">Aya</span>
             </div>
           </div>
         </div>
 
         <button
           type="button"
-          className="navbar-toggle-btn"
+          className="hidden cursor-pointer border-0 bg-transparent p-[0.2rem] text-[#2d1d0c] max-[900px]:block"
           onClick={toggleMenu}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
@@ -103,17 +102,17 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <nav className="navbar-mobile-menu">
+        <nav className="flex flex-col rounded-b-[20px] bg-[#ddceb9] px-3 pb-2 max-[900px]:flex">
           <NavLink to="/" end onClick={closeMenu}
             className={({ isActive }) =>
-              `mobile-nav-link ${isActive ? 'mobile-nav-link-active' : ''}`
+              `px-4 py-[0.6rem] text-[#2d1d0c] no-underline ${isActive ? 'bg-[rgba(110,71,59,0.12)] text-[#6e473b]' : ''}`
             }>
             Tableau de bord
           </NavLink>
 
           <NavLink to="/machines" end onClick={closeMenu}
             className={({ isActive }) =>
-              `mobile-nav-link ${isActive ? 'mobile-nav-link-active' : ''}`
+              `px-4 py-[0.6rem] text-[#2d1d0c] no-underline ${isActive ? 'bg-[rgba(110,71,59,0.12)] text-[#6e473b]' : ''}`
             }
           >
             Parc Machines
@@ -121,7 +120,7 @@ export default function Navbar() {
 
           <NavLink to="/kanban" onClick={closeMenu}
             className={({ isActive }) =>
-              `mobile-nav-link ${isActive ? 'mobile-nav-link-active' : ''}`
+              `px-4 py-[0.6rem] text-[#2d1d0c] no-underline ${isActive ? 'bg-[rgba(110,71,59,0.12)] text-[#6e473b]' : ''}`
             }
           >
             Kanban
@@ -129,7 +128,7 @@ export default function Navbar() {
 
           <NavLink to="/machines/new" onClick={closeMenu}
             className={({ isActive }) =>
-              `mobile-nav-link ${isActive ? 'mobile-nav-link-active' : ''}`
+              `px-4 py-[0.6rem] text-[#2d1d0c] no-underline ${isActive ? 'bg-[rgba(110,71,59,0.12)] text-[#6e473b]' : ''}`
             }
           >
             Nouvelle machine

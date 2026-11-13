@@ -1,29 +1,19 @@
-import { Routes, Route, Link } from 'react-router-dom'
-
-function Home() {
-  return <h2> Welcome to the Home Page!</h2>
-}
-
-function About() {
-  return <h2> This is the About Page!</h2>
-}
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/common/Navbar';
+import Dashboard from './pages/Dashboard';
+import Machines from './pages/Machines';
+import Kanban from './pages/Kanban';
 
 export default function App() {
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>My React App</h1>
-
-      <nav style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-      </nav>
-
-      <hr />
-
+    <div className="mx-auto flex min-h-screen w-full max-w-[1126px] flex-col border-x border-[#e5e4e7] bg-white text-center">
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/machines" element={<Machines />} />
+        <Route path="/kanban" element={<Kanban />} />
+        {/* Add other routes as needed */}
       </Routes>
     </div>
-  )
+  );
 }
