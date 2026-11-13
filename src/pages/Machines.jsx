@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import StatusBadge from '../components/common/StatusBadge';
+import { useMachines } from '../context/useMachines';
 
 const filters = [
   { value: 'all', label: 'Toutes' },
@@ -9,47 +11,9 @@ const filters = [
 ];
 
 export default function Machines() {
-  const [machines, setMachines] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState('');
+  const { machines, isLoading, loadError } = useMachines();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadMachines() {
-      try {
-        const response = await fetch('/machines.json', {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Impossible de charger les machines (${response.status})`);
-        }
-
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error('Le format des données machines est invalide');
-        }
-
-        setMachines(data);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          setLoadError(error.message);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadMachines();
-
-    return () => controller.abort();
-  }, []);
 
   const filteredMachines = machines.filter((machine) => {
     const search = searchTerm.toLowerCase();
@@ -77,12 +41,12 @@ export default function Machines() {
           </p>
         </div>
 
-        <button
-          type="button"
+        <Link
+          to="/machines/new"
           className="rounded-[20px] bg-[#6e473b] px-5 py-2.5 text-[13px] font-medium text-white shadow-sm transition-colors hover:bg-[#57372e]"
         >
           + Ajouter une machine
-        </button>
+        </Link>
       </header>
 
       <section className="mb-6 rounded-2xl bg-[#ebe4db] p-4">
