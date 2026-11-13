@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMachines } from '../context/useMachines';
+import { statuses, validateMachineForm, zones } from '../utils/machineValidation';
 
 const initialForm = {
   name: '',
@@ -8,9 +9,6 @@ const initialForm = {
   status: 'En fonctionnement',
   dailyProduction: '',
 };
-
-const zones = ['Atelier A', 'Atelier B', 'Atelier C', 'Atelier D'];
-const statuses = ['En fonctionnement', "À l'arrêt", 'En panne'];
 
 export default function NewMachine() {
   const navigate = useNavigate();
@@ -26,36 +24,9 @@ export default function NewMachine() {
     setSubmitError('');
   };
 
-  const validate = () => {
-    const nextErrors = {};
-    const trimmedName = form.name.trim();
-
-    if (!trimmedName) {
-      nextErrors.name = 'Le nom de la machine est obligatoire.';
-    } else if (trimmedName.length < 2) {
-      nextErrors.name = 'Le nom doit contenir au moins 2 caractères.';
-    }
-
-    if (!zones.includes(form.zone)) {
-      nextErrors.zone = 'Sélectionnez une zone valide.';
-    }
-
-    if (!statuses.includes(form.status)) {
-      nextErrors.status = 'Sélectionnez un statut valide.';
-    }
-
-    if (form.dailyProduction === '') {
-      nextErrors.dailyProduction = 'La production quotidienne est obligatoire.';
-    } else if (!/^\d+$/.test(form.dailyProduction)) {
-      nextErrors.dailyProduction = 'Saisissez un nombre entier positif ou nul.';
-    }
-
-    return nextErrors;
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    const nextErrors = validate();
+    const nextErrors = validateMachineForm(form);
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
