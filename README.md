@@ -115,6 +115,3 @@ npm run build
 3. Run `npm run lint` and `npm run build`.
 4. Open a pull request with a concise description of the user-facing impact.
 
-## License
-
-No license has been specified yet. Add a license before distributing FactoryPulse outside the project team.
