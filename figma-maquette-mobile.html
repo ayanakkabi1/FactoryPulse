@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FactoryPulse — Maquette Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f8f4ef; --card:#ebe4db; --pill:#ddceb9; --primary:#6e473b; --primary-dark:#57372e;
+    --ink:#2d1d0c; --muted:#8f7e70; --line:#d6c6b5; --faint:#b7a391;
+    --green:#10B981; --amber:#F59E0B; --red:#EF4444; --red700:#b91c1c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e8e2da;font-family:Poppins,system-ui,sans-serif;color:var(--ink)}
+  .canvas{display:flex;flex-direction:column;align-items:center;gap:48px;padding:48px 24px}
+  .screen-label{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#6b5d4f;margin-bottom:-24px}
+  .screen{width:1280px;max-width:100%;background:var(--bg);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 8px 30px rgba(45,29,12,.08)}
+  .app{max-width:1126px;margin:0 auto;border-left:1px solid #e5e4e7;border-right:1px solid #e5e4e7;min-height:900px;text-align:left}
+
+  /* ── Navbar ── */
+  .navbar{padding:24px 40px 0}
+  .navpill{display:flex;align-items:center;justify-content:space-between;border-radius:20px;background:var(--pill);padding:8px 20px}
+  .brand{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+  .brand img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+  .brand span{font-size:16px;font-weight:600;letter-spacing:-.87px}
+  .navlinks{display:flex;gap:32px}
+  .navlinks a{font-size:13px;font-weight:300;letter-spacing:-.6px;color:var(--ink);text-decoration:none}
+  .navlinks a.active{font-weight:500}
+  .navright{display:flex;align-items:center;gap:12px}
+  .searchbtn{width:34px;height:34px;border-radius:50%;border:0;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .user{display:flex;align-items:center;gap:8px}
+  .user img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+  .user .hello{font-size:13px;font-weight:300;color:var(--primary);line-height:1.3}
+  .user .name{font-size:13px;font-weight:500;color:var(--ink);line-height:1.3}
+
+  /* ── Shared ── */
+  .page{padding:32px 42px 40px}
+  .eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+  h1.title{font-size:38px;font-weight:600;line-height:1.2;letter-spacing:-2px}
+  .subtitle{font-size:13px;font-weight:200;letter-spacing:-.4px;margin-top:8px}
+  .btn-primary{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:20px;background:var(--primary);color:#fff;font-size:13px;font-weight:500;padding:10px 20px;cursor:pointer;text-decoration:none}
+  .btn-primary:hover{background:var(--primary-dark)}
+  .btn-outline{display:inline-flex;align-items:center;gap:6px;border-radius:20px;border:1.5px solid #ccc;background:transparent;color:var(--ink);font-size:13px;font-weight:200;padding:7px 14px;cursor:pointer}
+  .btn-ghost{display:inline-flex;align-items:center;border-radius:20px;border:1px solid var(--faint);background:transparent;color:var(--primary);font-size:13px;font-weight:500;padding:10px 20px;cursor:pointer;text-decoration:none}
+  .btn-ghost:hover{background:var(--pill)}
+
+  /* ── Dashboard ── */
+  .dash-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 42px}
+  .dash-head h1{font-size:38px;font-weight:600;line-height:1.3;letter-spacing:-2px;margin-bottom:4px}
+  .dash-head .sub{font-size:13px;font-weight:200;letter-spacing:-.65px}
+  .dash-actions{display:flex;align-items:center;gap:12px}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:24px 42px 0}
+  .stat-card{position:relative;min-height:130px;border-radius:16px;padding:20px;display:flex;flex-direction:column}
+  .stat-card.brown{background:var(--primary);color:#fff}
+  .stat-card.beige{background:var(--card);color:var(--ink)}
+  .stat-top{display:flex;align-items:flex-start;justify-content:space-between}
+  .stat-label{font-size:13px;font-weight:200;letter-spacing:-.7px}
+  .stat-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .brown .stat-icon{background:rgba(255,255,255,.2)}
+  .beige .stat-icon{background:rgba(45,29,12,.1)}
+  .stat-value{font-size:27px;font-weight:600;line-height:38px;letter-spacing:-1.5px;margin:8px 0 4px}
+  .stat-sub{font-size:11px;font-weight:200;letter-spacing:-.55px;opacity:.85}
+
+  /* ── Machines ── */
+  .machines-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:32px}
+  .toolbar{background:var(--card);border-radius:16px;padding:16px;margin-bottom:24px}
+  .toolbar-row{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .search-wrap{position:relative;width:320px;max-width:100%}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--primary)}
+  .search-wrap input{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg);padding:10px 16px 10px 38px;font-size:14px;font-family:inherit;color:var(--ink);outline:none}
+  .search-wrap input::placeholder{color:var(--muted)}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .pill-btn{white-space:nowrap;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer}
+  .pill-btn.active{background:var(--primary);color:#fff;border:0}
+  .pill-btn.inactive{background:var(--bg);color:var(--primary);border:1px solid var(--line)}
+  .table-card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .table-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:20px 24px}
+  .table-head h2{font-size:18px;font-weight:600}
+  .table-head .count{font-size:12px;font-weight:200;color:var(--primary);margin-top:4px}
+  .total-pill{background:var(--pill);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:500;color:var(--primary)}
+  table{width:100%;border-collapse:collapse;text-align:left;min-width:720px}
+  thead tr{border-bottom:1px solid var(--line)}
+  th{padding:16px 24px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--primary)}
+  th:last-child{text-align:right}
+  td{padding:16px 24px;font-size:14px;vertical-align:middle}
+  tbody tr{border-bottom:1px solid var(--line)}
+  tbody tr:last-child{border-bottom:0}
+  tbody tr:hover{background:rgba(248,244,239,.6)}
+  .m-name{font-weight:500}
+  .m-id{font-size:12px;font-weight:200;color:var(--primary);margin-top:4px}
+  .m-prod{font-weight:600;color:var(--primary);font-size:13px}
+  .actions{font-size:12px;text-align:right;white-space:nowrap}
+  .actions .edit{font-weight:500;color:var(--primary);cursor:pointer}
+  .actions .sep{color:var(--faint);margin:0 8px}
+  .actions .del{font-weight:500;color:var(--red700);cursor:pointer}
+  .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid}
+  .badge.ok{background:rgba(16,185,129,.2);color:var(--green);border-color:rgba(16,185,129,.3)}
+  .badge.stop{background:rgba(245,158,11,.2);color:var(--amber);border-color:rgba(245,158,11,.3)}
+  .badge.down{background:rgba(239,68,68,.2);color:var(--red);border-color:rgba(239,68,68,.3)}
+
+  /* ── New Machine ── */
+  .back-link{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);text-decoration:none;display:inline-block;margin-bottom:20px}
+  .back-link:hover{color:var(--ink)}
+  .form-wrap{max-width:672px;margin:0 auto}
+  .form-card{background:var(--card);border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .field label{display:block;font-size:14px;font-weight:500;margin-bottom:8px}
+  .field label .req{color:var(--red700);margin-left:4px}
+  .field input,.field select{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg);padding:10px 16px;font-size:14px;font-family:inherit;color:var(--ink);outline:none;appearance:none}
+  .field input::placeholder{color:var(--muted)}
+  .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%232d1d0c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  .form-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:32px}
+
+  /* ── Kanban ── */
+  .kanban-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:32px}
+  .kanban-board{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+  .kcol{background:var(--card);border-radius:16px;padding:16px;min-height:300px}
+  .kcol-head{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+  .kdot{width:10px;height:10px;border-radius:50%}
+  .kcol-head h3{font-size:15px;font-weight:600}
+  .kcount{margin-left:auto;background:var(--pill);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;color:var(--primary)}
+  .kcard{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+  .kcard .kname{font-size:14px;font-weight:500}
+  .kcard .kmeta{font-size:12px;font-weight:200;color:var(--primary);margin-top:4px}
+  .kcard .kfoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .kcard .kprod{font-size:12px;font-weight:600;color:var(--primary)}
+  .kcard .kzone{font-size:11px;font-weight:300;color:var(--muted)}
+
+  /* ── Mobile frames ── */
+  .screen.phone{width:390px}
+  .phone .app{border:none;min-height:auto}
+  .phone .navbar{padding:12px 16px 0}
+  .phone .navpill{padding:8px 12px}
+  .phone .navlinks,.phone .navright{display:none}
+  .phone .burger{display:flex}
+  .phone .page{padding:24px 16px 32px}
+  .phone .dash-head{padding:0 16px}
+  .phone .dash-head h1{font-size:28px}
+  .phone .stat-grid{grid-template-columns:1fr;padding:24px 16px 0;gap:12px}
+  .phone .stat-card{min-height:100px;padding:20px}
+  .phone .machines-head{margin-bottom:24px}
+  .phone .machines-head h1.title,.phone .kanban-head h1.title,.phone .form-wrap h1.title{font-size:28px}
+  .phone .table-card{overflow-x:auto}
+  .phone .form-grid{grid-template-columns:1fr}
+  .phone .form-actions{flex-direction:column-reverse}
+  .phone .form-actions>*{width:100%;justify-content:center}
+  .phone .kanban-board{grid-template-columns:1fr}
+  .burger{display:none;width:24px;height:24px;color:var(--ink)}
+
+  @media (max-width:1100px){
+    .stat-grid{grid-template-columns:1fr}
+    .kanban-board{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+    .navlinks{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ══════════ MOBILE · DASHBOARD ══════════ -->
+  <div class="screen-label">Mobile — Dashboard</div>
+  <div class="screen phone"><div class="app">
+    <header class="navbar"><div class="navpill">
+      <a class="brand" href="#"><img src="src/assets/Logo_wt_bg.png" alt="" /><span>FACTORYPULSE</span></a>
+      <button class="burger" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div></header>
+    <div class="dash-head">
+      <div>
+        <h1>Vue d'ensemble</h1>
+        <p class="sub">Suivez l'état de vos machines en temps réel</p>
+      </div>
+      <div class="dash-actions" style="margin-top:12px">
+        <button class="btn-outline">This Month
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="#2d1d0c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn-primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filter</button>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card brown">
+        <div class="stat-top"><span class="stat-label">Total des machines</span>
+          <span class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
+        </div>
+        <div class="stat-value">24</div>
+        <div class="stat-sub">Machines enregistrées</div>
+      </div>
+      <div class="stat-card beige">
+        <div class="stat-top"><span class="stat-label">Machines en fonctionnement</span>
+          <span class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></span>
+        </div>
+        <div class="stat-value">18</div>
+        <div class="stat-sub">En activité actuellement</div>
+      </div>
+      <div class="stat-card beige">
+        <div class="stat-top"><span class="stat-label">Machines en panne</span>
+          <span class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8M16 8l-8 8"/></svg></span>
+        </div>
+        <div class="stat-value">6</div>
+        <div class="stat-sub">Nécessitent une intervention</div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ══════════ MOBILE · MACHINES ══════════ -->
+  <div class="screen-label">Mobile — Parc Machines</div>
+  <div class="screen phone"><div class="app">
+    <header class="navbar"><div class="navpill">
+      <a class="brand" href="#"><img src="src/assets/Logo_wt_bg.png" alt="" /><span>FACTORYPULSE</span></a>
+      <button class="burger" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div></header>
+    <main class="page">
+      <div class="machines-head">
+        <div>
+          <p class="eyebrow">Parc industriel</p>
+          <h1 class="title">Gestion des machines</h1>
+          <p class="subtitle">Suivez et gérez l'ensemble de votre parc industriel</p>
+        </div>
+        <a class="btn-primary" href="#" style="margin-top:12px">+ Ajouter une machine</a>
+      </div>
+      <section class="toolbar">
+        <div class="toolbar-row">
+          <div class="search-wrap" style="width:100%">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+            <input type="search" placeholder="Rechercher par nom ou ID..." />
+          </div>
+        </div>
+        <div class="filters" style="margin-top:12px">
+          <button class="pill-btn active">Toutes</button>
+          <button class="pill-btn inactive">En marche</button>
+          <button class="pill-btn inactive">À l'arrêt</button>
+          <button class="pill-btn inactive">En panne</button>
+        </div>
+      </section>
+      <section class="table-card">
+        <div class="table-head" style="padding:16px">
+          <div><h2 style="font-size:16px">Toutes les machines</h2><p class="count">8 machines affichées</p></div>
+          <span class="total-pill">8 au total</span>
+        </div>
+        <table>
+          <thead><tr><th>Machine</th><th>Zone</th><th>Statut</th><th>Production</th><th style="text-align:right">Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="m-name">Robot de soudage</div><div class="m-id">M-001</div></td><td>Atelier A</td><td><span class="badge ok">En fonctionnement</span></td><td class="m-prod">125 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Presse hydraulique</div><div class="m-id">M-002</div></td><td>Atelier B</td><td><span class="badge down">En panne</span></td><td class="m-prod">0 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Convoyeur automatique</div><div class="m-id">M-003</div></td><td>Atelier A</td><td><span class="badge ok">En fonctionnement</span></td><td class="m-prod">340 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Machine de découpe laser</div><div class="m-id">M-004</div></td><td>Atelier C</td><td><span class="badge stop">À l'arrêt</span></td><td class="m-prod">80 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Robot d'assemblage</div><div class="m-id">M-005</div></td><td>Atelier B</td><td><span class="badge ok">En fonctionnement</span></td><td class="m-prod">210 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Station de contrôle qualité</div><div class="m-id">M-006</div></td><td>Atelier C</td><td><span class="badge down">En panne</span></td><td class="m-prod">0 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Imprimante industrielle 3D</div><div class="m-id">M-007</div></td><td>Atelier D</td><td><span class="badge stop">À l'arrêt</span></td><td class="m-prod">45 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+            <tr><td><div class="m-name">Ligne de conditionnement</div><div class="m-id">M-008</div></td><td>Atelier D</td><td><span class="badge ok">En fonctionnement</span></td><td class="m-prod">460 p/h</td><td class="actions"><span class="edit">Modifier</span><span class="sep">|</span><span class="del">Supprimer</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div></div>
+
+  <!-- ══════════ MOBILE · NEW MACHINE ══════════ -->
+  <div class="screen-label">Mobile — Nouvelle machine</div>
+  <div class="screen phone"><div class="app">
+    <header class="navbar"><div class="navpill">
+      <a class="brand" href="#"><img src="src/assets/Logo_wt_bg.png" alt="" /><span>FACTORYPULSE</span></a>
+      <button class="burger" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div></header>
+    <main class="page">
+      <div class="form-wrap">
+        <a class="back-link" href="#">← Retour au parc machines</a>
+        <p class="eyebrow">Parc industriel</p>
+        <h1 class="title">Nouvelle machine</h1>
+        <p class="subtitle">Enregistrez une machine avec ses informations de production.</p>
+        <form class="form-card" style="margin-top:24px;padding:16px" onsubmit="return false">
+          <div class="form-grid">
+            <div class="field">
+              <label>Nom de la machine<span class="req">*</span></label>
+              <input type="text" placeholder="Ex. Robot de soudage" />
+            </div>
+            <div class="field">
+              <label>Zone<span class="req">*</span></label>
+              <select><option>Sélectionner une zone</option><option>Atelier A</option><option>Atelier B</option><option>Atelier C</option><option>Atelier D</option></select>
+            </div>
+            <div class="field">
+              <label>Statut<span class="req">*</span></label>
+              <select><option>En fonctionnement</option><option>À l'arrêt</option><option>En panne</option></select>
+            </div>
+            <div class="field">
+              <label>Production quotidienne (p/h)<span class="req">*</span></label>
+              <input type="number" min="0" step="1" placeholder="Ex. 125" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <a class="btn-ghost" href="#">Annuler</a>
+            <button class="btn-primary" type="submit">Enregistrer la machine</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div></div>
+
+  <!-- ══════════ MOBILE · KANBAN ══════════ -->
+  <div class="screen-label">Mobile — Kanban</div>
+  <div class="screen phone"><div class="app">
+    <header class="navbar"><div class="navpill">
+      <a class="brand" href="#"><img src="src/assets/Logo_wt_bg.png" alt="" /><span>FACTORYPULSE</span></a>
+      <button class="burger" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div></header>
+    <main class="page">
+      <div class="kanban-head">
+        <div>
+          <p class="eyebrow">Parc industriel</p>
+          <h1 class="title">Kanban</h1>
+          <p class="subtitle">Suivez vos machines par statut en temps réel</p>
+        </div>
+        <a class="btn-primary" href="#" style="margin-top:12px">+ Ajouter</a>
+      </div>
+      <div class="kanban-board">
+        <div class="kcol">
+          <div class="kcol-head"><span class="kdot" style="background:var(--green)"></span><h3>En fonctionnement</h3><span class="kcount">4</span></div>
+          <div class="kcard"><div class="kname">Robot de soudage</div><div class="kmeta">M-001</div><div class="kfoot"><span class="kprod">125 p/h</span><span class="kzone">Atelier A</span></div></div>
+          <div class="kcard"><div class="kname">Convoyeur automatique</div><div class="kmeta">M-003</div><div class="kfoot"><span class="kprod">340 p/h</span><span class="kzone">Atelier A</span></div></div>
+          <div class="kcard"><div class="kname">Robot d'assemblage</div><div class="kmeta">M-005</div><div class="kfoot"><span class="kprod">210 p/h</span><span class="kzone">Atelier B</span></div></div>
+          <div class="kcard"><div class="kname">Ligne de conditionnement</div><div class="kmeta">M-008</div><div class="kfoot"><span class="kprod">460 p/h</span><span class="kzone">Atelier D</span></div></div>
+        </div>
+        <div class="kcol">
+          <div class="kcol-head"><span class="kdot" style="background:var(--amber)"></span><h3>À l'arrêt</h3><span class="kcount">2</span></div>
+          <div class="kcard"><div class="kname">Machine de découpe laser</div><div class="kmeta">M-004</div><div class="kfoot"><span class="kprod">80 p/h</span><span class="kzone">Atelier C</span></div></div>
+          <div class="kcard"><div class="kname">Imprimante industrielle 3D</div><div class="kmeta">M-007</div><div class="kfoot"><span class="kprod">45 p/h</span><span class="kzone">Atelier D</span></div></div>
+        </div>
+        <div class="kcol">
+          <div class="kcol-head"><span class="kdot" style="background:var(--red)"></span><h3>En panne</h3><span class="kcount">2</span></div>
+          <div class="kcard"><div class="kname">Presse hydraulique</div><div class="kmeta">M-002</div><div class="kfoot"><span class="kprod">0 p/h</span><span class="kzone">Atelier B</span></div></div>
+          <div class="kcard"><div class="kname">Station de contrôle qualité</div><div class="kmeta">M-006</div><div class="kfoot"><span class="kprod">0 p/h</span><span class="kzone">Atelier C</span></div></div>
+        </div>
+      </div>
+    </main>
+  </div></div>
+
+
+</div>
+</body>
+</html>
