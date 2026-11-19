@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MachinesContext } from './machinesContext';
+import { MachinesContext } from './MachinesContext';
+import { getNextMachineId } from '../utils/machineValidation';
 
 export function MachinesProvider({ children }) {
   const [machines, setMachines] = useState([]);
@@ -46,14 +47,9 @@ export function MachinesProvider({ children }) {
     let createdMachine;
 
     setMachines((currentMachines) => {
-      const highestId = currentMachines.reduce((highest, machine) => {
-        const numericId = Number.parseInt(machine.id?.replace('M-', ''), 10);
-        return Number.isNaN(numericId) ? highest : Math.max(highest, numericId);
-      }, 0);
-
       createdMachine = {
         ...machineDetails,
-        id: `M-${String(highestId + 1).padStart(3, '0')}`,
+        id: getNextMachineId(currentMachines),
       };
 
       return [...currentMachines, createdMachine];

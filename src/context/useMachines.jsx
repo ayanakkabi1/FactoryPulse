@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { MachinesContext } from './machinesContext';
+import { MachinesContext } from './MachinesContext';
 
 export function useMachines() {
   const context = useContext(MachinesContext);
